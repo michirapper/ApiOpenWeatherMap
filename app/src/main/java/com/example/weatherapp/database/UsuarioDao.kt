@@ -2,6 +2,7 @@ package com.example.weatherapp.database
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 @Dao
@@ -12,6 +13,6 @@ interface UsuarioDao {
     @Query("SELECT count(*) FROM usuario")
     suspend fun countUsuario(): Int?
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(usuario: Usuario)
 }

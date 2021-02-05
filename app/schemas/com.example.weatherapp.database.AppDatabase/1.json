@@ -1,0 +1,46 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "87d93a91f808041585781037040481e7",
+    "entities": [
+      {
+        "tableName": "Usuario",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`usuario` TEXT NOT NULL, `password` TEXT NOT NULL, `nombre` TEXT NOT NULL, PRIMARY KEY(`usuario`))",
+        "fields": [
+          {
+            "fieldPath": "usuario",
+            "columnName": "usuario",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "password",
+            "columnName": "password",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "nombre",
+            "columnName": "nombre",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "usuario"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '87d93a91f808041585781037040481e7')"
+    ]
+  }
+}

@@ -32,5 +32,5 @@ class DataRepository(context: Context) {
     fun countUsuario():Int = runBlocking {
         usuarioDao!!.countUsuario()!!
     }
-    
+
 }
