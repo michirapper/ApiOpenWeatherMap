@@ -1,9 +1,7 @@
 package com.example.weatherapp.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import com.example.weatherapp.R
 
@@ -25,6 +23,10 @@ class MainWeather : Fragment() {
 
         return v
 
+    }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.main, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
 

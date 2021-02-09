@@ -1,9 +1,7 @@
 package com.example.weatherapp.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -41,6 +39,10 @@ class RegisterFragment : Fragment() {
             procesarRegister()
         }
         return v
+    }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.main, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
 
