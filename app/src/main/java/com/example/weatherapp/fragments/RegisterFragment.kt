@@ -18,9 +18,6 @@ class RegisterFragment : Fragment() {
     lateinit var editTextNombre: EditText
     lateinit var contrasenaSegura: String
 
-    init {
-        setHasOptionsMenu(true)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,10 +36,6 @@ class RegisterFragment : Fragment() {
             procesarRegister()
         }
         return v
-    }
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.main, menu)
-        super.onCreateOptionsMenu(menu, inflater)
     }
 
 
