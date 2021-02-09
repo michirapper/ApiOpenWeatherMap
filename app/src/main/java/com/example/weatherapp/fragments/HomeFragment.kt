@@ -1,10 +1,12 @@
 package com.example.weatherapp.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.weatherapp.R
@@ -22,6 +24,13 @@ class HomeFragment : Fragment() {
         var v = inflater.inflate(R.layout.fragment_home, container, false)
         var buttonLogin = v.findViewById<Button>(R.id.buttonLogin)
         var buttonRegister = v.findViewById<Button>(R.id.buttonRegister)
+        var preferences = activity?.getSharedPreferences("checkbox", Context.MODE_PRIVATE)
+        var checkBox = preferences?.getString("remember", "")
+        if (checkBox.equals("true")) {
+            findNavController().navigate(R.id.action_homeFragment_to_mainWeather)
+        } else if (checkBox.equals("false")) {
+            Toast.makeText(context, "Please Sign in", Toast.LENGTH_SHORT).show()
+        }
 
         buttonLogin.setOnClickListener {
 //            val action = HomeFragmentDirections.actionHomeFragmentToLoginFragment()

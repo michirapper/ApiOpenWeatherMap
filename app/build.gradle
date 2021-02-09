@@ -3,6 +3,9 @@ plugins {
     id 'kotlin-android'
 }
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.android.application'
+
 
 android {
     compileSdkVersion 30
@@ -49,6 +52,7 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     def room_version = "2.2.6"
     def nav_version = "2.3.2"
 
@@ -71,6 +75,10 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
     testImplementation "androidx.room:room-testing:$room_version"
+
+    //Google services
+    implementation 'com.google.android.gms:play-services-location:17.1.0'
+
 
 
 }
