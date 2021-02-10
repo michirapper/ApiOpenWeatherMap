@@ -1,16 +1,24 @@
 package com.example.weatherapp.fragments
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.onNavDestinationSelected
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.weatherapp.R
+import com.example.weatherapp.database.Ciudades
+import com.example.weatherapp.database.DataRepository
 import com.example.weatherapp.pojo.City
 import com.squareup.picasso.Picasso
 import org.json.JSONException
@@ -21,6 +29,7 @@ class MainWeather : Fragment() {
     val lang = "es"
     val units = "metric"
     private var lista = MutableLiveData<ArrayList<City>>()
+    lateinit var nombreCiudad: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +56,7 @@ class MainWeather : Fragment() {
         getDataWeather(v)
         lista.observe(viewLifecycleOwner, Observer {
             //var cuantos = lista.value!!.size
+            nombreCiudad = lista.value!!.get(0).name
 
             val primeraLetra: String =
                 lista.value!!.get(0).description.substring(0, 1).toUpperCase()
@@ -139,6 +149,33 @@ class MainWeather : Fragment() {
             })
 
         requestQueue.add(request)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.homeFragment -> {
+                //Toast.makeText(context, "click on Cerrar sesion", Toast.LENGTH_LONG).show()
+                var preferences = activity?.getSharedPreferences("checkbox", Context.MODE_PRIVATE)
+                var editor: SharedPreferences.Editor = preferences!!.edit()
+                editor.putString("remember", "false")
+                editor.apply()
+                findNavController().navigate(R.id.nav_host_fragment)
+                true
+            }
+            R.id.favoriteEvent -> {
+                var preferences = activity?.getSharedPreferences("user", Context.MODE_PRIVATE)
+                var user = preferences?.getString("user", "")
+                val dataRepository = DataRepository(requireContext())
+                if (user != null) {
+                    dataRepository.insertCiudad(user, Ciudades(nombreCiudad))
+                }
+
+
+                //Toast.makeText(context, user, Toast.LENGTH_LONG).show()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
 

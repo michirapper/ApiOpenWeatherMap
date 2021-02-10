@@ -4,4 +4,9 @@
 
     <item android:title="Cerrar Sesion"
         android:id="@+id/homeFragment"/>
+    <item
+        android:id="@+id/favoriteEvent"
+        android:icon="@drawable/ic_baseline_favorite_24"
+        app:showAsAction="always"
+        android:title="Favoritos" />
 </menu>

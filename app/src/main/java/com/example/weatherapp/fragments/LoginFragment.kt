@@ -70,6 +70,14 @@ class LoginFragment : Fragment() {
         } else {
             if (dataRepository.isLogin(editTextUsuario.text.toString(), contrasenaSegura)) {
                 //val action = LoginFragmentDirections.actionLoginFragmentToListFragment()
+
+                    //Guardar usuario
+                val preferences = activity?.getSharedPreferences("user", Context.MODE_PRIVATE)
+                var editor: SharedPreferences.Editor = preferences!!.edit()
+                editor.putString("user", editTextUsuario.text.toString())
+                editor.apply()
+
+
                 //Guardado de sesion
 
                 if (remember.isChecked) {

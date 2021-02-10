@@ -10,6 +10,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.onNavDestinationSelected
+import com.example.weatherapp.database.DataRepository
 import com.google.android.material.appbar.CollapsingToolbarLayout
 
 class MainActivity : AppCompatActivity() {
