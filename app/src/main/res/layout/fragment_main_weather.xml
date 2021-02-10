@@ -11,57 +11,65 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="142dp"
-        android:layout_height="128dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="31dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="413dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView_temperature"
+        app:layout_constraintTop_toBottomOf="@+id/textView_Description"
         tools:src="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/textView_temperature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginTop="173dp"
+        android:layout_marginStart="31dp"
+        android:layout_marginEnd="47dp"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline2"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintEnd_toStartOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageView"
         tools:text="25.0°C" />
+
 
     <TextView
         android:id="@+id/textView_feels_like"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
         app:layout_constraintEnd_toEndOf="@+id/textView_temperature"
-        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintHorizontal_bias="0.588"
         app:layout_constraintStart_toStartOf="@+id/textView_temperature"
         app:layout_constraintTop_toBottomOf="@+id/textView_temperature"
         tools:text="Feels like 20.4°C" />
 
-
     <TextView
         android:id="@+id/textView_Description"
-        android:layout_width="238dp"
-        android:layout_height="27dp"
-        android:layout_marginTop="49dp"
-        android:layout_marginEnd="87dp"
+        android:layout_width="251dp"
+        android:layout_height="37dp"
+        android:layout_marginTop="121dp"
+        android:layout_marginBottom="42dp"
+        android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        app:layout_constraintBottom_toTopOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_feels_like"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="Descripcion" />
 
     <TextView
         android:id="@+id/textView_tempMax"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="85dp"
-        android:layout_marginEnd="224dp"
+        android:layout_marginStart="38dp"
+        android:layout_marginTop="88dp"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_Description"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_feels_like"
         tools:text="Maxima: 25.0°C" />
 
     <TextView
@@ -71,7 +79,6 @@
         android:layout_marginTop="8dp"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
         app:layout_constraintEnd_toEndOf="@+id/textView_tempMin"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/textView_tempMin"
         app:layout_constraintTop_toBottomOf="@+id/textView_tempMin"
         tools:text="Humedad: 20 %" />
@@ -83,10 +90,21 @@
         android:layout_marginTop="8dp"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
         app:layout_constraintEnd_toEndOf="@+id/textView_tempMax"
-        app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="@+id/textView_tempMax"
         app:layout_constraintTop_toBottomOf="@+id/textView_tempMax"
         tools:text="Minima: 25.0°C" />
+
+    <TextView
+        android:id="@+id/textView_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Madrid"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
