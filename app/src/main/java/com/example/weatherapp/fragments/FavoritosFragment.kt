@@ -1,10 +1,12 @@
 package com.example.weatherapp.fragments
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -15,6 +17,7 @@ import com.example.weatherapp.adapters.CiudadesAdapter
 import com.example.weatherapp.database.Ciudades
 import com.example.weatherapp.database.DataRepository
 import com.example.weatherapp.model.CiudadesViewModel
+import kotlin.system.exitProcess
 
 
 class FavoritosFragment : Fragment() {
@@ -82,21 +85,6 @@ class FavoritosFragment : Fragment() {
 
         super.onCreateOptionsMenu(menu, inflater)
 
-    }
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.homeFragment -> {
-                //Toast.makeText(context, "click on Cerrar sesion", Toast.LENGTH_LONG).show()
-                var preferences = activity?.getSharedPreferences("checkbox", Context.MODE_PRIVATE)
-                var editor: SharedPreferences.Editor = preferences!!.edit()
-                editor.putString("remember", "false")
-                editor.apply()
-                findNavController().navigate(R.id.nav_host_fragment)
-                true
-            }
-
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     companion object {

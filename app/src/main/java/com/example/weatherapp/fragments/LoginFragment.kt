@@ -86,7 +86,7 @@ class LoginFragment : Fragment() {
                     var editor: SharedPreferences.Editor = preferences!!.edit()
                     editor.putString("remember", "true")
                     editor.apply()
-                    Toast.makeText(context, "Checked", Toast.LENGTH_SHORT).show()
+                   // Toast.makeText(context, "Checked", Toast.LENGTH_SHORT).show()
 
 
                 } else if (!remember.isChecked) {
@@ -95,7 +95,7 @@ class LoginFragment : Fragment() {
                     var editor: SharedPreferences.Editor = preferences!!.edit()
                     editor.putString("remember", "false")
                     editor.apply()
-                    Toast.makeText(context, "Unchecked", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(context, "Unchecked", Toast.LENGTH_SHORT).show()
                 }
 
                 //Aqui vamos a la aplicacion del tiempo

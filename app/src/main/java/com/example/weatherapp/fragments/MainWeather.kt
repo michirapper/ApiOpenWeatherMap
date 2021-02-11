@@ -2,10 +2,10 @@ package com.example.weatherapp.fragments
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
+import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
@@ -35,6 +34,14 @@ class MainWeather : Fragment() {
     lateinit var nombreCiudad: String
     lateinit var siFavorito: MenuItem
     lateinit var noFavorito: MenuItem
+    lateinit var icon: ImageView
+    lateinit var description: TextView
+    lateinit var name: TextView
+    lateinit var temperature: TextView
+    lateinit var feels_like: TextView
+    lateinit var temp_Max: TextView
+    lateinit var temp_Min: TextView
+    lateinit var humedad: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +58,7 @@ class MainWeather : Fragment() {
                 builder.setNegativeButton("No") { dialog, which -> dialog.dismiss() }
                 val alert = builder.create()
                 alert.show()
+
             }
 
         })
@@ -64,14 +72,14 @@ class MainWeather : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val v = inflater.inflate(R.layout.fragment_main_weather, container, false)
-        var icon = v.findViewById<ImageView>(R.id.imageView)
-        var description = v.findViewById<TextView>(R.id.textView_Description)
-        var name = v.findViewById<TextView>(R.id.textView_name)
-        var temperature = v.findViewById<TextView>(R.id.textView_temperature)
-        var feels_like = v.findViewById<TextView>(R.id.textView_feels_like)
-        var temp_Max = v.findViewById<TextView>(R.id.textView_tempMax)
-        var temp_Min = v.findViewById<TextView>(R.id.textView_tempMin)
-        var humedad = v.findViewById<TextView>(R.id.textView_humedad)
+        icon = v.findViewById<ImageView>(R.id.imageView)
+        description = v.findViewById<TextView>(R.id.textView_Description)
+        name = v.findViewById<TextView>(R.id.textView_name)
+        temperature = v.findViewById<TextView>(R.id.textView_temperature)
+        feels_like = v.findViewById<TextView>(R.id.textView_feels_like)
+        temp_Max = v.findViewById<TextView>(R.id.textView_tempMax)
+        temp_Min = v.findViewById<TextView>(R.id.textView_tempMin)
+        humedad = v.findViewById<TextView>(R.id.textView_humedad)
 
         //get bundle
         var viewModel = ViewModelProvider(requireActivity()).get(CiudadesViewModel::class.java)
@@ -82,32 +90,8 @@ class MainWeather : Fragment() {
         } else {
             nombreCiudad = "Cadiz"
         }
-
-       // getActivity()?.supportFragmentManager?.popBackStack()
-
-        getDataWeather(v, nombreCiudad)
-        lista.observe(viewLifecycleOwner, Observer {
-            //var cuantos = lista.value!!.size
-            nombreCiudad = lista.value!!.get(0).name
-
-            val primeraLetra: String =
-                lista.value!!.get(0).description.substring(0, 1).toUpperCase()
-            val restoDeLaCadena: String = lista.value!!.get(0).description.substring(1)
-            val primeraMinuscula = primeraLetra + restoDeLaCadena
-
-            description.text = primeraMinuscula
-            name.text = lista.value!!.get(0).name
-            temperature.text = lista.value!!.get(0).temperature.toString() + "°C"
-            feels_like.text = "Se siente como " + lista.value!!.get(0).feels_like.toString() + "°C"
-            temp_Max.text = "Maximas: " + lista.value!!.get(0).temp_Max.toString() + "°C"
-            temp_Min.text = "Minimas: " + lista.value!!.get(0).temp_Min.toString() + "°C"
-            humedad.text = "Humedad: " + lista.value!!.get(0).humedad.toString() + "%"
-            Picasso.get().load("https://openweathermap.org/img/w/" + lista.value!![0].icon + ".png")
-                .into(
-                    icon
-                );
-
-        })
+        getDataWeather(nombreCiudad)
+        aplicarCambios()
 
 
 
@@ -129,18 +113,88 @@ class MainWeather : Fragment() {
         var favorito = dataRepository.isFavoritos(user.toString(), nombreCiudad)
         siFavorito = menu.findItem(R.id.favoriteEvent)
         noFavorito = menu.findItem(R.id.noFavoriteEvent)
-        if (favorito){
+        if (favorito) {
             noFavorito.isVisible = true
             siFavorito.isVisible = false
-        }else if (!favorito){
+        } else if (!favorito) {
             siFavorito.isVisible = true
             noFavorito.isVisible = false
         }
+
+        //
+
+        var menuItemSearch = menu.findItem(R.id.app_bar_search)
+        menuItemSearch.setVisible(true)
+
+        var searchView = menuItemSearch.actionView as SearchView
+        searchView.queryHint = "Buscar ciudad Favorita"
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+
+                getDataWeather(query.toString())
+                lista.observe(viewLifecycleOwner, Observer {
+                    nombreCiudad = lista.value!!.get(0).name
+
+                    val primeraLetra: String = lista.value!!.get(0).description.substring(0, 1).toUpperCase()
+                    val restoDeLaCadena: String = lista.value!!.get(0).description.substring(1)
+                    val primeraMinuscula = primeraLetra + restoDeLaCadena
+
+                    description.text = primeraMinuscula
+                    name.text = lista.value!!.get(0).name
+                    temperature.text = lista.value!!.get(0).temperature.toString() + "°C"
+                    feels_like.text =
+                        "Se siente como " + lista.value!!.get(0).feels_like.toString() + "°C"
+                    temp_Max.text = "Maximas: " + lista.value!!.get(0).temp_Max.toString() + "°C"
+                    temp_Min.text = "Minimas: " + lista.value!!.get(0).temp_Min.toString() + "°C"
+                    humedad.text = "Humedad: " + lista.value!!.get(0).humedad.toString() + "%"
+                    Picasso.get().load("https://openweathermap.org/img/w/" + lista.value!![0].icon + ".png").into(icon)
+                    Toast.makeText(context, nombreCiudad, Toast.LENGTH_SHORT).show()
+                    var favorito = dataRepository.isFavoritos(user.toString(), nombreCiudad)
+                    if (favorito) {
+                        noFavorito.isVisible = true
+                        siFavorito.isVisible = false
+                    } else if (!favorito) {
+                        siFavorito.isVisible = true
+                        noFavorito.isVisible = false
+                    }
+                })
+
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+
+        })
+
         super.onCreateOptionsMenu(menu, inflater)
 
     }
 
-    private fun getDataWeather(v: View, nombreCiudad: String) {
+    fun aplicarCambios() {
+        lista.observe(viewLifecycleOwner, Observer {
+            nombreCiudad = lista.value!!.get(0).name
+
+            val primeraLetra: String = lista.value!!.get(0).description.substring(0, 1).toUpperCase()
+            val restoDeLaCadena: String = lista.value!!.get(0).description.substring(1)
+            val primeraMinuscula = primeraLetra + restoDeLaCadena
+
+            description.text = primeraMinuscula
+            name.text = lista.value!!.get(0).name
+            temperature.text = lista.value!!.get(0).temperature.toString() + "°C"
+            feels_like.text =
+                "Se siente como " + lista.value!!.get(0).feels_like.toString() + "°C"
+            temp_Max.text = "Maximas: " + lista.value!!.get(0).temp_Max.toString() + "°C"
+            temp_Min.text = "Minimas: " + lista.value!!.get(0).temp_Min.toString() + "°C"
+            humedad.text = "Humedad: " + lista.value!!.get(0).humedad.toString() + "%"
+            Picasso.get().load("https://openweathermap.org/img/w/" + lista.value!![0].icon + ".png").into(icon)
+        })
+
+    }
+
+    private fun getDataWeather(nombreCiudad: String) {
         val url =
             "https://api.openweathermap.org/data/2.5/weather?q=" + nombreCiudad + "&lang=" + lang + "&units=" + units + "&appid=" + API_CODE
 
@@ -159,6 +213,7 @@ class MainWeather : Fragment() {
             { response ->
                 try {
                     var listaCity = ArrayList<City>()
+                    listaCity.clear()
 
                     name = response.getString("name")
 
@@ -177,18 +232,7 @@ class MainWeather : Fragment() {
 
                     // Log.e("my activity", name.toString())
 
-                    listaCity.add(
-                        City(
-                            icon,
-                            name,
-                            description,
-                            temperature,
-                            feels_like,
-                            temp_Max,
-                            temp_Min,
-                            humedad
-                        )
-                    )
+                    listaCity.add(City(icon,name,description,temperature,feels_like,temp_Max,temp_Min,humedad))
 
                     lista.value = listaCity
                 } catch (e: JSONException) {
@@ -209,15 +253,6 @@ class MainWeather : Fragment() {
         var favorito = dataRepository.isFavoritos(user.toString(), nombreCiudad)
 
         return when (item.itemId) {
-            R.id.homeFragment -> {
-                //Toast.makeText(context, "click on Cerrar sesion", Toast.LENGTH_LONG).show()
-                var preferences = activity?.getSharedPreferences("checkbox", Context.MODE_PRIVATE)
-                var editor: SharedPreferences.Editor = preferences!!.edit()
-                editor.putString("remember", "false")
-                editor.apply()
-                findNavController().navigate(R.id.nav_host_fragment)
-                true
-            }
             R.id.favoriteEvent -> {
                 if (user != null) {
                     dataRepository.insertCiudad(Ciudades(nombreCiudad), user)
@@ -244,7 +279,6 @@ class MainWeather : Fragment() {
             else -> super.onOptionsItemSelected(item)
         }
     }
-
 
 
     companion object {
