@@ -37,5 +37,14 @@
         android:id="@+id/mainWeather"
         android:name="com.example.weatherapp.fragments.MainWeather"
         android:label="fragment_main_weather"
-        tools:layout="@layout/fragment_main_weather" />
+        tools:layout="@layout/fragment_main_weather" >
+        <action
+            android:id="@+id/action_mainWeather_to_favoritosFragment2"
+            app:destination="@id/favoritosFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoritosFragment"
+        android:name="com.example.weatherapp.fragments.FavoritosFragment"
+        android:label="fragment_favoritos"
+        tools:layout="@layout/fragment_favoritos" />
 </navigation>

@@ -169,14 +169,13 @@ class MainWeather : Fragment() {
                 if (user != null) {
                     dataRepository.insertCiudad(user, Ciudades(nombreCiudad))
                 }
-
-
                 //Toast.makeText(context, user, Toast.LENGTH_LONG).show()
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
+
 
 
     companion object {
