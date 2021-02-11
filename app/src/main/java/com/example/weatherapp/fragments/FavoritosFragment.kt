@@ -1,12 +1,13 @@
 package com.example.weatherapp.fragments
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.*
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherapp.R
@@ -25,6 +26,7 @@ class FavoritosFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -51,6 +53,50 @@ class FavoritosFragment : Fragment() {
         adapter = CiudadesAdapter(peliculas[0].ciudades, viewModel)
         recyclerViewLista.setAdapter(adapter)
         recyclerViewLista.setLayoutManager(LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false))
+    }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.main, menu)
+
+        var siFavorito = menu.findItem(R.id.favoriteEvent)
+        var noFavorito = menu.findItem(R.id.noFavoriteEvent)
+        noFavorito.isVisible = false
+        siFavorito.isVisible = false
+
+        var menuItemSearch = menu.findItem(R.id.app_bar_search)
+        menuItemSearch.setVisible(true)
+
+        var searchView = menuItemSearch.actionView as SearchView
+        searchView.queryHint = "Buscar ciudad Favorita"
+
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter.filter.filter(newText)
+                return true
+            }
+
+        })
+
+        super.onCreateOptionsMenu(menu, inflater)
+
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.homeFragment -> {
+                //Toast.makeText(context, "click on Cerrar sesion", Toast.LENGTH_LONG).show()
+                var preferences = activity?.getSharedPreferences("checkbox", Context.MODE_PRIVATE)
+                var editor: SharedPreferences.Editor = preferences!!.edit()
+                editor.putString("remember", "false")
+                editor.apply()
+                findNavController().navigate(R.id.nav_host_fragment)
+                true
+            }
+
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     companion object {
