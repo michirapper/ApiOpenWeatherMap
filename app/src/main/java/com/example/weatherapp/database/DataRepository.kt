@@ -34,8 +34,9 @@ class DataRepository(context: Context) {
         usuarioDao!!.getCiudades(usuario)
     }
 
-
-
+    fun borrarCiudad(usuario: String, ciudad: String) = runBlocking {
+        usuarioDao!!.borrarCiudad(usuario, ciudad)
+    }
 
     fun isLogin(usuario: String, password: String): Boolean {
 
@@ -43,6 +44,18 @@ class DataRepository(context: Context) {
 
         job = CoroutineScope(Dispatchers.IO).async {
             usuarioDao!!.countUsuarioByUsuarioPassword(usuario, password)!!
+        }
+
+        return runBlocking {
+            job.await() == 1
+        }
+    }
+    fun isFavoritos(usuario: String, ciudad: String): Boolean {
+
+        var job: Job
+
+        job = CoroutineScope(Dispatchers.IO).async {
+            usuarioDao!!.estaEnFavoritos(usuario, ciudad)!!
         }
 
         return runBlocking {

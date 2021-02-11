@@ -2,6 +2,7 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+
     <item android:title="Favoritos"
         android:id="@+id/favoritosFragment"/>
     <item android:title="Cerrar Sesion"
@@ -11,4 +12,9 @@
         android:icon="@drawable/ic_baseline_favorite_24"
         app:showAsAction="always"
         android:title="Favoritos" />
+    <item
+        android:id="@+id/noFavoriteEvent"
+        android:title="noFavoritos"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_baseline_do_not_disturb_on_24"/>
 </menu>
