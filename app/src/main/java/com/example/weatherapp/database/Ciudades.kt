@@ -5,5 +5,6 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class Ciudades(
-    @PrimaryKey val nombre: String
+    @PrimaryKey(autoGenerate = false)
+    val nombre: String
 )

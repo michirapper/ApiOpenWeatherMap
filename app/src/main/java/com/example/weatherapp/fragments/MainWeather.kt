@@ -167,7 +167,7 @@ class MainWeather : Fragment() {
                 var user = preferences?.getString("user", "")
                 val dataRepository = DataRepository(requireContext())
                 if (user != null) {
-                    dataRepository.insertCiudad(user, Ciudades(nombreCiudad))
+                    dataRepository.insertCiudad(Ciudades(nombreCiudad), user)
                 }
                 //Toast.makeText(context, user, Toast.LENGTH_LONG).show()
                 true

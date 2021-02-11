@@ -5,11 +5,11 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [Usuario::class, Ciudades::class, UsuariosCiudadesCrossRef::class], version = 1)
+@Database(entities = [Usuario::class, Ciudades::class, UsuarioCiudadesCrossRef::class], version = 1)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun usuarioDao(): UsuarioDao
-    abstract fun ciudadesDao(): CiudadesDao
-    abstract fun usuariosCiudadesDao(): UsuariosCiudadesDao
+    //abstract fun ciudadesDao(): CiudadesDao
+    //abstract fun usuariosCiudadesDao(): UsuariosCiudadesDao
 
     companion object {
         private const val DATABASE_NAME = "weather_database"

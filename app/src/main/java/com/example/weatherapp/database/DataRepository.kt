@@ -5,11 +5,11 @@ import kotlinx.coroutines.*
 
 class DataRepository(context: Context) {
     private val usuarioDao: UsuarioDao? = AppDatabase.getInstance(context)?.usuarioDao()
-    private val ciudadesDao: CiudadesDao? = AppDatabase.getInstance(context)?.ciudadesDao()
-    private val usuariosCiudadesDao: UsuariosCiudadesDao? = AppDatabase.getInstance(context)?.usuariosCiudadesDao()
+    //private val ciudadesDao: CiudadesDao? = AppDatabase.getInstance(context)?.ciudadesDao()
+    //private val usuariosCiudadesDao: UsuariosCiudadesDao? = AppDatabase.getInstance(context)?.usuariosCiudadesDao()
 
-    fun insert(usuario: Usuario):Int {
-        if (usuarioDao != null){
+    fun insert(usuario: Usuario): Int {
+        if (usuarioDao != null) {
             CoroutineScope(Dispatchers.IO).launch {
                 usuarioDao.insert(usuario)
             }
@@ -17,20 +17,29 @@ class DataRepository(context: Context) {
         }
         return -1
     }
-    fun insertCiudad(usuario: String, ciudades: Ciudades):Int {
-        if (usuariosCiudadesDao != null && ciudadesDao!= null){
+
+    fun insertCiudad(ciudades: Ciudades, usuario: String ): Int {
+       // if (usuariosCiudadesDao != null && ciudadesDao != null) {
+        if (usuarioDao != null) {
             CoroutineScope(Dispatchers.IO).launch {
-                ciudadesDao.insert(ciudades)
-                usuariosCiudadesDao.insert(UsuariosCiudadesCrossRef(usuario, ciudades.nombre))
+                usuarioDao.insertCiudad(ciudades)
+                usuarioDao.insertUsuarioCiudadesCrossRef(UsuarioCiudadesCrossRef(usuario, ciudades.nombre))
             }
             return 0
         }
         return -1
     }
 
-    fun isLogin(usuario: String, password:String): Boolean{
+    fun getCiudades(usuario: String):List<UsuarioWithCiudades> = runBlocking {
+        usuarioDao!!.getCiudades(usuario)
+    }
 
-        var job : Job
+
+
+
+    fun isLogin(usuario: String, password: String): Boolean {
+
+        var job: Job
 
         job = CoroutineScope(Dispatchers.IO).async {
             usuarioDao!!.countUsuarioByUsuarioPassword(usuario, password)!!
@@ -41,7 +50,7 @@ class DataRepository(context: Context) {
         }
     }
 
-    fun countUsuario():Int = runBlocking {
+    fun countUsuario(): Int = runBlocking {
         usuarioDao!!.countUsuario()!!
     }
 

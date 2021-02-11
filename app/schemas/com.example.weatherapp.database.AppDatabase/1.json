@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "665471d8b1d4787294e199c340057ea1",
+    "identityHash": "b1b0da9ced04c8b6887b2d557d882754",
     "entities": [
       {
         "tableName": "Usuario",
@@ -57,7 +57,7 @@
         "foreignKeys": []
       },
       {
-        "tableName": "UsuariosCiudadesCrossRef",
+        "tableName": "UsuarioCiudadesCrossRef",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`usuario` TEXT NOT NULL, `nombre` TEXT NOT NULL, PRIMARY KEY(`usuario`, `nombre`))",
         "fields": [
           {
@@ -87,7 +87,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '665471d8b1d4787294e199c340057ea1')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'b1b0da9ced04c8b6887b2d557d882754')"
     ]
   }
 }
