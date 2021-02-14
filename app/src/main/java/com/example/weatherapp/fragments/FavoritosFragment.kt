@@ -148,7 +148,7 @@ class FavoritosFragment : Fragment(), ActionMode.Callback {
 
     override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
         val inflater = mode.menuInflater
-        inflater.inflate(R.menu.main, menu)
+        inflater.inflate(R.menu.menu_comparacion, menu)
         return true
     }
 

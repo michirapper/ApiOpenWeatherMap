@@ -11,11 +11,6 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/compararFragment"
-        android:title="Comparar"
-        />
-
-    <item
         android:id="@+id/favoritosFragment"
         android:title="Favoritos" />
 
