@@ -5,16 +5,18 @@ import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherapp.R
 import com.example.weatherapp.adapters.CiudadesAdapter
+import com.example.weatherapp.adapters.RecyclerItemClickListener
 import com.example.weatherapp.database.Ciudades
 import com.example.weatherapp.database.DataRepository
 import com.example.weatherapp.model.CiudadesViewModel
-import java.util.ArrayList
+import java.util.*
 
 
 class FavoritosFragment : Fragment(), ActionMode.Callback {
@@ -37,6 +39,7 @@ class FavoritosFragment : Fragment(), ActionMode.Callback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+
     }
 
     override fun onCreateView(
@@ -60,9 +63,39 @@ class FavoritosFragment : Fragment(), ActionMode.Callback {
 
         var viewModel = ViewModelProvider(requireActivity()).get(CiudadesViewModel::class.java)
 
-        adapter = CiudadesAdapter(context ,ciudades, viewModel)
+        adapter = CiudadesAdapter(context, ciudades, viewModel)
+        recyclerViewLista.layoutManager = LinearLayoutManager(
+            context,
+            LinearLayoutManager.VERTICAL,
+            false
+        )
         recyclerViewLista.adapter = adapter
-        recyclerViewLista.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
+        recyclerViewLista.addOnItemTouchListener(
+            RecyclerItemClickListener(
+                context,
+                recyclerViewLista,
+                object : RecyclerItemClickListener.OnItemClickListener {
+                    override fun onItemClick(view: View?, position: Int) {
+                        if (isMultiSelect) {
+                            multiSelect(position)
+                        }
+                    }
+
+                    override fun onItemLongClick(view: View?, position: Int) {
+                        if (!isMultiSelect) {
+                            selectedIds = ArrayList()
+                            isMultiSelect = true
+                            if (actionMode == null) {
+                                actionMode = activity!!.startActionMode(this@FavoritosFragment)
+                            }
+                        }
+                        (activity as AppCompatActivity?)!!.supportActionBar!!.hide()
+                        multiSelect(position)
+                    }
+                })
+        )
+
+
     }
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.main, menu)
@@ -78,7 +111,7 @@ class FavoritosFragment : Fragment(), ActionMode.Callback {
         var searchView = menuItemSearch.actionView as SearchView
         searchView.queryHint = "Buscar ciudad Favorita"
 
-        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
@@ -98,7 +131,9 @@ class FavoritosFragment : Fragment(), ActionMode.Callback {
         val data = adapter!!.getItem(position)
         if (data != null) {
             if (actionMode != null) {
-                if (selectedIds.contains(data.nombre)) selectedIds.remove(data.nombre) else selectedIds.add(data.nombre)
+                if (selectedIds.contains(data.nombre)) selectedIds.remove(data.nombre) else selectedIds.add(
+                    data.nombre
+                )
                 if (selectedIds.size > 0) actionMode!!.title = selectedIds.size.toString() //show selected item count on action mode.
                 else {
                     actionMode!!.title = "" //remove item count from action mode.
@@ -127,9 +162,11 @@ class FavoritosFragment : Fragment(), ActionMode.Callback {
                 //just to show selected items.
                 val stringBuilder = StringBuilder()
                 for (data in ciudades) {
-                    if (selectedIds.contains(data.nombre)) stringBuilder.append("\n").append(data.nombre)
+                    if (selectedIds.contains(data.nombre)) stringBuilder.append("\n")
+                        .append(data.nombre)
                 }
-                Toast.makeText(context, "Selected items are :$stringBuilder", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Selected items are :$stringBuilder", Toast.LENGTH_SHORT)
+                    .show()
                 return true
             }
         }
@@ -141,7 +178,9 @@ class FavoritosFragment : Fragment(), ActionMode.Callback {
         isMultiSelect = false
         selectedIds = ArrayList()
         adapter!!.setSelectedIds(ArrayList())
+        (activity as AppCompatActivity?)!!.supportActionBar!!.show()
     }
+
 
     companion object {
 

@@ -40,6 +40,7 @@ class CiudadesAdapter(val context: Context?, var ciudades: List<Ciudades>, var c
 
         holder.title.text = ciudades[position].nombre
         val id = ciudades[position].nombre
+        holder.bindItems(ciudadesFilterList[position])
         if (selectedIds.contains(id)){
             holder.rootView.foreground =
                 context?.let { ContextCompat.getColor(it, R.color.colorControlActivated) }?.let {
@@ -56,7 +57,13 @@ class CiudadesAdapter(val context: Context?, var ciudades: List<Ciudades>, var c
                 }
         }
         holder.itemView.setOnClickListener{
-            Toast.makeText(context, holder.title.text, Toast.LENGTH_SHORT).show()
+            ciudadesViewModel.setCiudadSeleccionada(ciudadesFilterList[position])
+            //Toast.makeText(it.context, ciudadesFilterList[position].toString(), Toast.LENGTH_SHORT).show()
+
+            val bundle = bundleOf(Pair("ciudad", ciudadesFilterList[position].nombre))
+            val action = FavoritosFragmentDirections.actionFavoritosFragmentToMainWeather(bundle)
+            it.findNavController().navigate(action)
+
         }
 
 
@@ -66,9 +73,7 @@ class CiudadesAdapter(val context: Context?, var ciudades: List<Ciudades>, var c
 //            ciudadesViewModel.setCiudadSeleccionada(ciudadesFilterList[position])
 //            //Toast.makeText(it.context, ciudadesFilterList[position].toString(), Toast.LENGTH_SHORT).show()
 //
-//            val bundle = bundleOf(Pair("ciudad", ciudadesFilterList[position].nombre))
-//            val action = FavoritosFragmentDirections.actionFavoritosFragmentToMainWeather(bundle)
-//            it.findNavController().navigate(action)
+
 
 
     }
@@ -95,6 +100,10 @@ class CiudadesAdapter(val context: Context?, var ciudades: List<Ciudades>, var c
         init {
             title = itemView.findViewById(R.id.textViewTitulo)
             rootView = itemView.findViewById(R.id.root_view)
+        }
+        fun bindItems(ciudades: Ciudades) {
+            val textViewNombre = itemView.findViewById<TextView>(R.id.textViewTitulo)
+            textViewNombre.text = ciudades.nombre
         }
     }
 

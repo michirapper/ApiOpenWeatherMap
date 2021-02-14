@@ -12,7 +12,8 @@
 
     <item
         android:id="@+id/compararFragment"
-        android:title="Comparar" />
+        android:title="Comparar"
+        />
 
     <item
         android:id="@+id/favoritosFragment"
