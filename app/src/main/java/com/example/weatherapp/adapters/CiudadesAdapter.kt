@@ -20,6 +20,8 @@ import kotlin.coroutines.coroutineContext
 class CiudadesAdapter(var ciudades: List<Ciudades>, var ciudadesViewModel: CiudadesViewModel)
     : RecyclerView.Adapter<CiudadesAdapter.ViewHolder>(), Filterable {
 
+    private var selectedIds: List<String> = ArrayList()
+
     var ciudadesFilterList = ArrayList<Ciudades>()
 
     init{
@@ -51,6 +53,15 @@ class CiudadesAdapter(var ciudades: List<Ciudades>, var ciudadesViewModel: Ciuda
     //this method is giving the size of the list
     override fun getItemCount(): Int {
         return ciudadesFilterList.size
+    }
+
+    fun getItem(position: Int): Ciudades {
+        return ciudades[position]
+    }
+
+    fun setSelectedIds(selectedIds: List<String>) {
+        this.selectedIds = selectedIds
+        notifyDataSetChanged()
     }
 
     //the class is hodling the list view

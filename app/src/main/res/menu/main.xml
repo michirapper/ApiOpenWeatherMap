@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <item
@@ -10,18 +10,27 @@
         app:actionViewClass="android.widget.SearchView"
         app:showAsAction="always" />
 
-    <item android:title="Favoritos"
-        android:id="@+id/favoritosFragment"/>
-    <item android:title="Cerrar Sesion"
-        android:id="@+id/homeFragment"/>
+    <item
+        android:id="@+id/compararFragment"
+        android:title="Comparar" />
+
+    <item
+        android:id="@+id/favoritosFragment"
+        android:title="Favoritos" />
+
+    <item
+        android:id="@+id/homeFragment"
+        android:title="Cerrar Sesion" />
+
     <item
         android:id="@+id/favoriteEvent"
         android:icon="@drawable/ic_baseline_favorite_24"
-        app:showAsAction="always"
-        android:title="Favoritos" />
+        android:title="Favoritos"
+        app:showAsAction="always" />
+
     <item
         android:id="@+id/noFavoriteEvent"
+        android:icon="@drawable/ic_baseline_do_not_disturb_on_24"
         android:title="noFavoritos"
-        app:showAsAction="always"
-        android:icon="@drawable/ic_baseline_do_not_disturb_on_24"/>
+        app:showAsAction="always" />
 </menu>
