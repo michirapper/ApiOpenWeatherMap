@@ -37,11 +37,14 @@ class FavoritosFragment : Fragment(), ActionMode.Callback {
     private var isMultiSelect = false
 
     private var selectedIds: MutableList<String> = ArrayList()
+    lateinit var modificarMenu: MenuItem
+    lateinit var compararMenu: MenuItem
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+
 
         activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
@@ -168,6 +171,9 @@ class FavoritosFragment : Fragment(), ActionMode.Callback {
     override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
         val inflater = mode.menuInflater
         inflater.inflate(R.menu.menu_comparacion, menu)
+        modificarMenu = menu.findItem(R.id.modificarFragment)
+        compararMenu = menu.findItem(R.id.compararFragment)
+
         return true
     }
 
@@ -179,7 +185,7 @@ class FavoritosFragment : Fragment(), ActionMode.Callback {
         when (menuItem.itemId) {
             R.id.compararFragment -> {
                 var ciudadesSelected = mutableListOf<Ciudades>()
-                if (selectedIds.size < 3) {
+                if (selectedIds.size == 2) {
                     //just to show selected items.
                    // val stringBuilder = StringBuilder()
                     for (data in ciudades) {
@@ -203,6 +209,32 @@ class FavoritosFragment : Fragment(), ActionMode.Callback {
                 }
 
             }
+            R.id.modificarFragment -> {
+                var ciudadesSelected = mutableListOf<Ciudades>()
+                if (selectedIds.size == 1) {
+                    //just to show selected items.
+                    // val stringBuilder = StringBuilder()
+                    for (data in ciudades) {
+                        if (selectedIds.contains(data.nombre)) {
+                            //stringBuilder.append("\n").append(data.nombre)
+                            ciudadesSelected.add(Ciudades(data.nombre))
+                        }
+                    }
+
+                    //Toast.makeText(context, ciudadesSelected[0].nombre + " noC", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(context, ciudadesSelected[1].nombre, Toast.LENGTH_SHORT).show()
+
+                    findNavController().navigate(FavoritosFragmentDirections.actionFavoritosFragmentToModificarFragment(ciudadesSelected[0].nombre))
+                    mode.finish()
+
+                    //Toast.makeText(context, "Selected items are :$stringBuilder", Toast.LENGTH_SHORT).show()
+                    return true
+                } else {
+                    Toast.makeText(context, "Solo 1 ciudad", Toast.LENGTH_SHORT).show()
+                }
+
+                return true
+            }
         }
         return false
     }
@@ -210,6 +242,8 @@ class FavoritosFragment : Fragment(), ActionMode.Callback {
     override fun onDestroyActionMode(mode: ActionMode?) {
         actionMode = null
         isMultiSelect = false
+        compararMenu.isVisible = false
+        modificarMenu.isVisible = false
         selectedIds = ArrayList()
         adapter!!.setSelectedIds(ArrayList())
         (activity as AppCompatActivity?)!!.supportActionBar!!.show()

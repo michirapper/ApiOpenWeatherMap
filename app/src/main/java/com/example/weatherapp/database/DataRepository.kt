@@ -38,6 +38,11 @@ class DataRepository(context: Context) {
         usuarioDao!!.borrarCiudad(usuario, ciudad)
     }
 
+    fun actualizarCiudad(usuario: String, ciudadOld: String, ciudadNew: String)= runBlocking {
+        usuarioDao!!.insertCiudad(Ciudades(ciudadNew))
+        usuarioDao!!.updateCiudadFavorita(usuario, ciudadOld, ciudadNew)
+    }
+
     fun isLogin(usuario: String, password: String): Boolean {
 
         var job: Job
@@ -66,5 +71,6 @@ class DataRepository(context: Context) {
     fun countUsuario(): Int = runBlocking {
         usuarioDao!!.countUsuario()!!
     }
+
 
 }

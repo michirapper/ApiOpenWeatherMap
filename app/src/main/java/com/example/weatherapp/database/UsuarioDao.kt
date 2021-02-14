@@ -24,6 +24,10 @@ interface UsuarioDao {
     @Query("SELECT count(*) FROM UsuarioCiudadesCrossRef where usuario = :usuario and nombre = :ciudad")
     suspend fun estaEnFavoritos(usuario: String, ciudad: String): Int?
 
+    @Transaction
+    @Query("UPDATE UsuarioCiudadesCrossRef SET nombre = :ciudadNew Where usuario = :usuario AND nombre= :ciudadOld")
+    suspend fun updateCiudadFavorita(usuario: String, ciudadOld: String, ciudadNew: String): Int?
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertCiudad(ciudades: Ciudades)
 
