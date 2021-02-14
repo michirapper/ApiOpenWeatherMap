@@ -4,6 +4,13 @@
 
 
     <item
+        android:id="@+id/mainWeather"
+        android:title="atras"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_baseline_arrow_back_24"
+        android:visible="false"/>
+
+    <item
         android:id="@+id/app_bar_search"
         android:icon="@drawable/ic_search_black_24dp"
         android:title="Search"
@@ -29,4 +36,5 @@
         android:icon="@drawable/ic_baseline_do_not_disturb_on_24"
         android:title="noFavoritos"
         app:showAsAction="always" />
+
 </menu>

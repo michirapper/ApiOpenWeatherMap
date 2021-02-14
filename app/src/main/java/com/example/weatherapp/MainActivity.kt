@@ -43,6 +43,16 @@ class MainActivity : AppCompatActivity() {
 
                 true
             }
+            R.id.mainWeather -> {
+                val navController = findNavController(R.id.nav_host_fragment)
+                return item.onNavDestinationSelected(navController)
+
+//                val navController = findNavController(R.id.favoritosFragment)
+//                item.onNavDestinationSelected(navController)
+                //findNavController().navigate(R.id.viewTransactionsAction)
+
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

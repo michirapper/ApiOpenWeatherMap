@@ -1,13 +1,18 @@
 package com.example.weatherapp.fragments
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment.findNavController
+import androidx.navigation.ui.onNavDestinationSelected
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherapp.R
@@ -17,6 +22,9 @@ import com.example.weatherapp.database.Ciudades
 import com.example.weatherapp.database.DataRepository
 import com.example.weatherapp.model.CiudadesViewModel
 import java.util.*
+import kotlin.system.exitProcess
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 
 
 class FavoritosFragment : Fragment(), ActionMode.Callback {
@@ -40,6 +48,15 @@ class FavoritosFragment : Fragment(), ActionMode.Callback {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
 
+        activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val bundle = bundleOf(Pair("ciudad", ""))
+                findNavController().navigate(FavoritosFragmentDirections.actionFavoritosFragmentToMainWeather(bundle))
+            }
+
+        })
+
+
     }
 
     override fun onCreateView(
@@ -48,6 +65,7 @@ class FavoritosFragment : Fragment(), ActionMode.Callback {
     ): View? {
         // Inflate the layout for this fragment
         var v = inflater.inflate(R.layout.fragment_favoritos, container, false)
+
 
         recyclerViewLista = v.findViewById<RecyclerView>(R.id.recyclerviewlista)
         rellenarListaCiudades()
@@ -102,8 +120,12 @@ class FavoritosFragment : Fragment(), ActionMode.Callback {
 
         var siFavorito = menu.findItem(R.id.favoriteEvent)
         var noFavorito = menu.findItem(R.id.noFavoriteEvent)
+        var favorito = menu.findItem(R.id.favoritosFragment)
+        var atras = menu.findItem(R.id.mainWeather)
         noFavorito.isVisible = false
         siFavorito.isVisible = false
+        favorito.isVisible = false
+        atras.isVisible = true
 
         var menuItemSearch = menu.findItem(R.id.app_bar_search)
         menuItemSearch.setVisible(true)
@@ -159,15 +181,21 @@ class FavoritosFragment : Fragment(), ActionMode.Callback {
     override fun onActionItemClicked(mode: ActionMode, menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             R.id.compararFragment -> {
-                //just to show selected items.
-                val stringBuilder = StringBuilder()
-                for (data in ciudades) {
-                    if (selectedIds.contains(data.nombre)) stringBuilder.append("\n")
-                        .append(data.nombre)
+                if (selectedIds.size < 3) {
+                    //just to show selected items.
+                    val stringBuilder = StringBuilder()
+                    for (data in ciudades) {
+                        if (selectedIds.contains(data.nombre)){
+                            stringBuilder.append("\n").append(data.nombre)
+                        }
+                    }
+                    Toast.makeText(context, "Selected items are :$stringBuilder", Toast.LENGTH_SHORT).show()
+                    return true
+                }else{
+                    Toast.makeText(context, "Solo 2 ciudades", Toast.LENGTH_SHORT).show()
+                    return false
                 }
-                Toast.makeText(context, "Selected items are :$stringBuilder", Toast.LENGTH_SHORT)
-                    .show()
-                return true
+
             }
         }
         return false
@@ -180,6 +208,7 @@ class FavoritosFragment : Fragment(), ActionMode.Callback {
         adapter!!.setSelectedIds(ArrayList())
         (activity as AppCompatActivity?)!!.supportActionBar!!.show()
     }
+
 
 
     companion object {
