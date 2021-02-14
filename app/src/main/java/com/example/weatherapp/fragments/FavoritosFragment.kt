@@ -60,7 +60,7 @@ class FavoritosFragment : Fragment(), ActionMode.Callback {
 
         var viewModel = ViewModelProvider(requireActivity()).get(CiudadesViewModel::class.java)
 
-        adapter = CiudadesAdapter(ciudades, viewModel)
+        adapter = CiudadesAdapter(context ,ciudades, viewModel)
         recyclerViewLista.adapter = adapter
         recyclerViewLista.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL,false)
     }
