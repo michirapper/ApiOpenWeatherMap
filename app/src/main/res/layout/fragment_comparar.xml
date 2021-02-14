@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.CompararFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="0dp"
+        android:layout_height="62dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView_feels_like1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView_feels_like1"
+        app:layout_constraintTop_toBottomOf="@+id/textView_feels_like1"
+        tools:src="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/textView_temperature1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="160dp"
+        android:layout_marginEnd="32dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+        app:layout_constraintEnd_toStartOf="@+id/textView_feels_like1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="25.0°C" />
+
+    <TextView
+        android:id="@+id/textView_feels_like1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="30dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        app:layout_constraintEnd_toStartOf="@+id/imageView1"
+        app:layout_constraintStart_toEndOf="@+id/textView_temperature1"
+        app:layout_constraintTop_toBottomOf="@+id/textView_Description1"
+        tools:text="Feels like 20.4°C" />
+
+    <TextView
+        android:id="@+id/textView_Description1"
+        android:layout_width="251dp"
+        android:layout_height="37dp"
+        android:layout_marginTop="56dp"
+        android:layout_marginBottom="52dp"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        app:layout_constraintBottom_toBottomOf="@+id/textView_temperature1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView_name1"
+        tools:text="Descripcion" />
+
+    <TextView
+        android:id="@+id/textView_tempMax1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_temperature1"
+        tools:text="Maxima: 25.0°C" />
+
+    <TextView
+        android:id="@+id/textView_humedad1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_tempMax1"
+        tools:text="Humedad: 20 %" />
+
+    <TextView
+        android:id="@+id/textView_tempMin1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="13dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        app:layout_constraintBottom_toTopOf="@+id/textView_humedad1"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Minima: 25.0°C" />
+
+    <TextView
+        android:id="@+id/textView_name1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:text="Madrid"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="0dp"
+        android:layout_height="62dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView_feels_like2"
+        app:layout_constraintEnd_toEndOf="@+id/textView_tempMin2"
+        app:layout_constraintStart_toStartOf="@+id/imageView1"
+        app:layout_constraintTop_toBottomOf="@+id/textView_feels_like2"
+        tools:src="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/textView_temperature2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="154dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="25.0°C" />
+
+    <TextView
+        android:id="@+id/textView_feels_like2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="9dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        app:layout_constraintStart_toEndOf="@+id/textView_temperature2"
+        app:layout_constraintTop_toTopOf="@+id/textView_temperature2"
+        tools:text="Feels like 20.4°C" />
+
+    <TextView
+        android:id="@+id/textView_Description2"
+        android:layout_width="251dp"
+        android:layout_height="37dp"
+        android:layout_marginTop="165dp"
+        android:layout_marginBottom="165dp"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        app:layout_constraintBottom_toBottomOf="@+id/textView_humedad2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView_tempMax1"
+        tools:text="Descripcion" />
+
+    <TextView
+        android:id="@+id/textView_tempMax2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="28dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_temperature2"
+        tools:text="Maxima: 25.0°C" />
+
+    <TextView
+        android:id="@+id/textView_humedad2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_tempMax2"
+        tools:text="Humedad: 20 %" />
+
+    <TextView
+        android:id="@+id/textView_tempMin2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="16dp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        tools:text="Minima: 25.0°C" />
+
+    <TextView
+        android:id="@+id/textView_name2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="11dp"
+        android:text="Madrid"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+        app:layout_constraintBottom_toTopOf="@+id/textView_Description2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -53,5 +53,20 @@
         <action
             android:id="@+id/action_favoritosFragment_to_mainWeather"
             app:destination="@id/mainWeather" />
+        <action
+            android:id="@+id/action_favoritosFragment_to_compararFragment"
+            app:destination="@id/compararFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/compararFragment"
+        android:name="com.example.weatherapp.fragments.CompararFragment"
+        android:label="fragment_comparar"
+        tools:layout="@layout/fragment_comparar" >
+        <argument
+            android:name="ciudad1"
+            app:argType="string" />
+        <argument
+            android:name="ciudad2"
+            app:argType="string" />
     </fragment>
 </navigation>

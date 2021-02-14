@@ -1,6 +1,5 @@
 package com.example.weatherapp.fragments
 
-import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.*
@@ -11,8 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.NavHostFragment.findNavController
-import androidx.navigation.ui.onNavDestinationSelected
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.weatherapp.R
@@ -22,9 +20,6 @@ import com.example.weatherapp.database.Ciudades
 import com.example.weatherapp.database.DataRepository
 import com.example.weatherapp.model.CiudadesViewModel
 import java.util.*
-import kotlin.system.exitProcess
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 
 
 class FavoritosFragment : Fragment(), ActionMode.Callback {
@@ -51,7 +46,11 @@ class FavoritosFragment : Fragment(), ActionMode.Callback {
         activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 val bundle = bundleOf(Pair("ciudad", ""))
-                findNavController().navigate(FavoritosFragmentDirections.actionFavoritosFragmentToMainWeather(bundle))
+                findNavController().navigate(
+                    FavoritosFragmentDirections.actionFavoritosFragmentToMainWeather(
+                        bundle
+                    )
+                )
             }
 
         })
@@ -163,8 +162,6 @@ class FavoritosFragment : Fragment(), ActionMode.Callback {
                 }
                 adapter!!.setSelectedIds(selectedIds)
             }
-        }else {
-            Toast.makeText(context, "hola", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -181,17 +178,26 @@ class FavoritosFragment : Fragment(), ActionMode.Callback {
     override fun onActionItemClicked(mode: ActionMode, menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             R.id.compararFragment -> {
+                var ciudadesSelected = mutableListOf<Ciudades>()
                 if (selectedIds.size < 3) {
                     //just to show selected items.
-                    val stringBuilder = StringBuilder()
+                   // val stringBuilder = StringBuilder()
                     for (data in ciudades) {
-                        if (selectedIds.contains(data.nombre)){
-                            stringBuilder.append("\n").append(data.nombre)
+                        if (selectedIds.contains(data.nombre)) {
+                            //stringBuilder.append("\n").append(data.nombre)
+                            ciudadesSelected.add(Ciudades(data.nombre))
                         }
                     }
-                    Toast.makeText(context, "Selected items are :$stringBuilder", Toast.LENGTH_SHORT).show()
+
+                    //Toast.makeText(context, ciudadesSelected[0].nombre + " noC", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(context, ciudadesSelected[1].nombre, Toast.LENGTH_SHORT).show()
+
+                    findNavController().navigate(FavoritosFragmentDirections.actionFavoritosFragmentToCompararFragment(ciudadesSelected[0].nombre, ciudadesSelected[1].nombre))
+                    mode.finish()
+
+                    //Toast.makeText(context, "Selected items are :$stringBuilder", Toast.LENGTH_SHORT).show()
                     return true
-                }else{
+                } else {
                     Toast.makeText(context, "Solo 2 ciudades", Toast.LENGTH_SHORT).show()
                     return false
                 }
@@ -208,7 +214,6 @@ class FavoritosFragment : Fragment(), ActionMode.Callback {
         adapter!!.setSelectedIds(ArrayList())
         (activity as AppCompatActivity?)!!.supportActionBar!!.show()
     }
-
 
 
     companion object {
