@@ -100,7 +100,7 @@
         android:id="@+id/textView_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Madrid"
+        android:text="No hay resultados"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline2"
         app:layout_constraintBaseline_toBaselineOf="@+id/textView_temperature"

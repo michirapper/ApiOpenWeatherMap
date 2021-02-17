@@ -23,6 +23,7 @@ import com.example.weatherapp.model.CiudadesViewModel
 import com.example.weatherapp.pojo.City
 import com.squareup.picasso.Picasso
 import org.json.JSONException
+import java.text.Normalizer
 import kotlin.system.exitProcess
 
 
@@ -103,6 +104,11 @@ class MainWeather : Fragment() {
         viewModel.setCiudadSeleccionada(Ciudades("Barcelona"))
         super.onResume()
     }
+    fun limpiarAcentos(texto: String): String {
+        val cadenaNormalize = Normalizer.normalize(texto, Normalizer.Form.NFD)
+        val limpio = cadenaNormalize.replace("[^\\p{ASCII}]".toRegex(), "")
+        return limpio
+    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.main, menu)
@@ -110,6 +116,7 @@ class MainWeather : Fragment() {
         var preferences = activity?.getSharedPreferences("user", Context.MODE_PRIVATE)
         var user = preferences?.getString("user", "")
         val dataRepository = DataRepository(requireContext())
+        nombreCiudad = limpiarAcentos(nombreCiudad)
         var favorito = dataRepository.isFavoritos(user.toString(), nombreCiudad)
         siFavorito = menu.findItem(R.id.favoriteEvent)
         noFavorito = menu.findItem(R.id.noFavoriteEvent)
@@ -136,7 +143,8 @@ class MainWeather : Fragment() {
                 lista.observe(viewLifecycleOwner, Observer {
                     nombreCiudad = lista.value!!.get(0).name
 
-                    val primeraLetra: String = lista.value!!.get(0).description.substring(0, 1).toUpperCase()
+                    val primeraLetra: String =
+                        lista.value!!.get(0).description.substring(0, 1).toUpperCase()
                     val restoDeLaCadena: String = lista.value!!.get(0).description.substring(1)
                     val primeraMinuscula = primeraLetra + restoDeLaCadena
 
@@ -148,8 +156,13 @@ class MainWeather : Fragment() {
                     temp_Max.text = "Maximas: " + lista.value!!.get(0).temp_Max.toString() + "°C"
                     temp_Min.text = "Minimas: " + lista.value!!.get(0).temp_Min.toString() + "°C"
                     humedad.text = "Humedad: " + lista.value!!.get(0).humedad.toString() + "%"
-                    Picasso.get().load("https://openweathermap.org/img/w/" + lista.value!![0].icon + ".png").into(icon)
+                    Picasso.get()
+                        .load("https://openweathermap.org/img/w/" + lista.value!![0].icon + ".png")
+                        .into(
+                            icon
+                        )
                     Toast.makeText(context, nombreCiudad, Toast.LENGTH_SHORT).show()
+                    nombreCiudad = limpiarAcentos(nombreCiudad)
                     var favorito = dataRepository.isFavoritos(user.toString(), nombreCiudad)
                     if (favorito) {
                         noFavorito.isVisible = true
@@ -177,7 +190,8 @@ class MainWeather : Fragment() {
         lista.observe(viewLifecycleOwner, Observer {
             nombreCiudad = lista.value!!.get(0).name
 
-            val primeraLetra: String = lista.value!!.get(0).description.substring(0, 1).toUpperCase()
+            val primeraLetra: String =
+                lista.value!!.get(0).description.substring(0, 1).toUpperCase()
             val restoDeLaCadena: String = lista.value!!.get(0).description.substring(1)
             val primeraMinuscula = primeraLetra + restoDeLaCadena
 
@@ -189,7 +203,10 @@ class MainWeather : Fragment() {
             temp_Max.text = "Maximas: " + lista.value!!.get(0).temp_Max.toString() + "°C"
             temp_Min.text = "Minimas: " + lista.value!!.get(0).temp_Min.toString() + "°C"
             humedad.text = "Humedad: " + lista.value!!.get(0).humedad.toString() + "%"
-            Picasso.get().load("https://openweathermap.org/img/w/" + lista.value!![0].icon + ".png").into(icon)
+            Picasso.get().load("https://openweathermap.org/img/w/" + lista.value!![0].icon + ".png")
+                .into(
+                    icon
+                )
         })
 
     }
@@ -232,7 +249,18 @@ class MainWeather : Fragment() {
 
                     // Log.e("my activity", name.toString())
 
-                    listaCity.add(City(icon,name,description,temperature,feels_like,temp_Max,temp_Min,humedad))
+                    listaCity.add(
+                        City(
+                            icon,
+                            name,
+                            description,
+                            temperature,
+                            feels_like,
+                            temp_Max,
+                            temp_Min,
+                            humedad
+                        )
+                    )
 
                     lista.value = listaCity
                 } catch (e: JSONException) {
@@ -250,11 +278,13 @@ class MainWeather : Fragment() {
         val dataRepository = DataRepository(requireContext())
         var preferences = activity?.getSharedPreferences("user", Context.MODE_PRIVATE)
         var user = preferences?.getString("user", "")
+        nombreCiudad = limpiarAcentos(nombreCiudad)
         var favorito = dataRepository.isFavoritos(user.toString(), nombreCiudad)
 
         return when (item.itemId) {
             R.id.favoriteEvent -> {
                 if (user != null) {
+                    nombreCiudad = limpiarAcentos(nombreCiudad)
                     dataRepository.insertCiudad(Ciudades(nombreCiudad), user)
                     if (!favorito) {
                         noFavorito.isVisible = true
@@ -266,6 +296,7 @@ class MainWeather : Fragment() {
             }
             R.id.noFavoriteEvent -> {
                 if (user != null) {
+                    nombreCiudad = limpiarAcentos(nombreCiudad)
                     dataRepository.borrarCiudad(user, nombreCiudad)
                     if (favorito) {
                         siFavorito.isVisible = true

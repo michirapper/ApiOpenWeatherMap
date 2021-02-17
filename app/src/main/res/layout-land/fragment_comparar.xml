@@ -17,7 +17,6 @@
         android:layout_marginTop="61dp"
         android:layout_marginEnd="26dp"
         android:layout_marginBottom="61dp"
-        android:text="Madrid"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
         app:layout_constraintBottom_toTopOf="@+id/textView_temperature1"
@@ -38,7 +37,7 @@
         app:layout_constraintEnd_toStartOf="@+id/textView_temperature2"
         app:layout_constraintStart_toStartOf="@+id/textView_tempMax1"
         app:layout_constraintTop_toBottomOf="@+id/textView_name1"
-        tools:text="Descripcion" />
+        android:text="No hay resultados" />
 
     <TextView
         android:id="@+id/textView_tempMax1"
@@ -113,7 +112,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="65dp"
         android:layout_marginBottom="11dp"
-        android:text="Madrid"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
         app:layout_constraintBottom_toTopOf="@+id/textView_Description2"
@@ -191,7 +189,7 @@
         app:layout_constraintEnd_toEndOf="@+id/textView_tempMin2"
         app:layout_constraintStart_toEndOf="@+id/imageView1"
         app:layout_constraintTop_toTopOf="@+id/imageView1"
-        tools:text="Descripcion" />
+       android:text="No hay resultados" />
 
     <TextView
         android:id="@+id/textView_temperature2"
