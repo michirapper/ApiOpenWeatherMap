@@ -3,6 +3,8 @@ package com.example.weatherapp.fragments
 import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
@@ -14,7 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.android.volley.Request
+import com.android.volley.*
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.weatherapp.MainActivity
@@ -24,7 +26,13 @@ import com.example.weatherapp.database.DataRepository
 import com.example.weatherapp.model.CiudadesViewModel
 import com.example.weatherapp.pojo.City
 import com.squareup.picasso.Picasso
+import org.apache.http.conn.ConnectTimeoutException
 import org.json.JSONException
+import org.xmlpull.v1.XmlPullParserException
+import java.net.ConnectException
+import java.net.MalformedURLException
+import java.net.SocketException
+import java.net.SocketTimeoutException
 import java.text.Normalizer
 import kotlin.system.exitProcess
 
@@ -332,10 +340,44 @@ class MainWeather : Fragment() {
                 }
             },
             { error ->
-                error.printStackTrace()
+                Toast.makeText(context, getVolleyError(error), Toast.LENGTH_LONG).show()
             })
 
         requestQueue.add(request)
+    }
+
+    fun getVolleyError(error: VolleyError): String {
+        var errorMsg = ""
+        if (error is NoConnectionError) {
+            val cm = activity?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            var activeNetwork: NetworkInfo? = null
+            activeNetwork = cm.activeNetworkInfo
+            errorMsg = if (activeNetwork != null && activeNetwork.isConnectedOrConnecting) {
+                "Server is not connected to the internet. Please try again"
+            } else {
+                "Your device is not connected to internet.please try again with active internet connection"
+            }
+        } else if (error is NetworkError || error.cause is ConnectException) {
+            errorMsg = "Your device is not connected to internet.please try again with active internet connection"
+        } else if (error.cause is MalformedURLException) {
+            errorMsg = "That was a bad request please try again…"
+        } else if (error is ParseError || error.cause is IllegalStateException || error.cause is JSONException || error.cause is XmlPullParserException) {
+            errorMsg = "There was an error parsing data…"
+        } else if (error.cause is OutOfMemoryError) {
+            errorMsg = "Device out of memory"
+        } else if (error is AuthFailureError) {
+            errorMsg = "Failed to authenticate user at the server, please contact support"
+        } else if (error is ServerError || error.cause is ServerError) {
+            errorMsg = "Internal server error occurred please try again...."
+        } else if (error is TimeoutError || error.cause is SocketTimeoutException || error.cause is ConnectTimeoutException || error.cause is SocketException || (error.cause!!.message != null && error.cause!!.message!!.contains(
+                "Your connection has timed out, please try again"
+            ))
+        ) {
+            errorMsg = "Your connection has timed out, please try again"
+        } else {
+            errorMsg = "An unknown error occurred during the operation, please try again"
+        }
+        return errorMsg
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
