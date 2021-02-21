@@ -2,6 +2,8 @@ package com.example.weatherapp.fragments
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.weatherapp.R
 import kotlin.system.exitProcess
+
 
 class HomeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +41,8 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val editor: SharedPreferences.Editor = activity?.getSharedPreferences("ciudadEscogida", MODE_PRIVATE)!!.edit()
+        editor.clear().apply()
         // Inflate the layout for this fragment
         var v = inflater.inflate(R.layout.fragment_home, container, false)
         var buttonLogin = v.findViewById<Button>(R.id.buttonLogin)
@@ -60,6 +65,7 @@ class HomeFragment : Fragment() {
            // val action = HomeFragmentDirections.actionHomeFragmentToRegisterFragment()
             findNavController().navigate(R.id.action_homeFragment_to_registerFragment)
         }
+
 
         return v
     }

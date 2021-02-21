@@ -2,6 +2,7 @@ package com.example.weatherapp.fragments
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
@@ -16,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.example.weatherapp.MainActivity
 import com.example.weatherapp.R
 import com.example.weatherapp.database.Ciudades
 import com.example.weatherapp.database.DataRepository
@@ -47,6 +49,7 @@ class MainWeather : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+
         activity?.onBackPressedDispatcher?.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 val builder = AlertDialog.Builder(context)
@@ -67,12 +70,15 @@ class MainWeather : Fragment() {
 
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         val v = inflater.inflate(R.layout.fragment_main_weather, container, false)
+
+
         icon = v.findViewById<ImageView>(R.id.imageView)
         description = v.findViewById<TextView>(R.id.textView_Description)
         name = v.findViewById<TextView>(R.id.textView_name)
@@ -81,29 +87,61 @@ class MainWeather : Fragment() {
         temp_Max = v.findViewById<TextView>(R.id.textView_tempMax)
         temp_Min = v.findViewById<TextView>(R.id.textView_tempMin)
         humedad = v.findViewById<TextView>(R.id.textView_humedad)
-
+        var latitud: String? = ""
+        var longitud: String? = ""
+        nombreCiudad = ""
         //get bundle
         var viewModel = ViewModelProvider(requireActivity()).get(CiudadesViewModel::class.java)
         var ciudad = viewModel.getCiudadSeleccionada()
+        var preferences = activity?.getSharedPreferences("ciudadEscogida", Context.MODE_PRIVATE)
+        var ciudadEscogida = preferences?.getString("ciudadEscogida", "")
+
+
 
         if (ciudad.nombre != "") {
             nombreCiudad = ciudad.nombre
-        } else {
-            nombreCiudad = "Cadiz"
+        } else if(ciudadEscogida != "") {
+            //Toast.makeText(context, ciudadEscogida, Toast.LENGTH_SHORT).show()
+            nombreCiudad = ciudadEscogida.toString()
+        }else{
+            var coordenadas = activity?.getSharedPreferences("coordenadas", Context.MODE_PRIVATE)
+            latitud = coordenadas?.getString("latitude", "")
+            longitud = coordenadas?.getString("longitude", "")
         }
-        getDataWeather(nombreCiudad)
+
+        getDataWeather(nombreCiudad,latitud, longitud)
         aplicarCambios()
 
 
+
+
+
+        //Toast.makeText(context, ciudadEscogida, Toast.LENGTH_SHORT).show()
 
         return v
     }
 
     override fun onResume() {
-        var viewModel = ViewModelProvider(requireActivity()).get(CiudadesViewModel::class.java)
-        viewModel.setCiudadSeleccionada(Ciudades("Barcelona"))
         super.onResume()
+        var coordenadas = activity?.getSharedPreferences("coordenadas", Context.MODE_PRIVATE)
+        var latitud = coordenadas?.getString("latitude", "")
+        var longitud = coordenadas?.getString("longitude", "")
+        getDataWeather(nombreCiudad,latitud, longitud)
+        aplicarCambios()
+
     }
+
+//    override fun onResume() {
+////        var preferences = activity?.getSharedPreferences("ciudadEscogida", Context.MODE_PRIVATE)
+////        var ciudadEscogida = preferences?.getString("ciudadEscogida", "")
+////
+////        Toast.makeText(context, ciudadEscogida, Toast.LENGTH_SHORT).show()
+//
+//        var viewModel = ViewModelProvider(requireActivity()).get(CiudadesViewModel::class.java)
+//        viewModel.setCiudadSeleccionada(Ciudades("Zaragoza"))
+//        super.onResume()
+//    }
+
     fun limpiarAcentos(texto: String): String {
         val cadenaNormalize = Normalizer.normalize(texto, Normalizer.Form.NFD)
         val limpio = cadenaNormalize.replace("[^\\p{ASCII}]".toRegex(), "")
@@ -139,7 +177,7 @@ class MainWeather : Fragment() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
 
-                getDataWeather(query.toString())
+                getDataWeather(query.toString(), "", "")
                 lista.observe(viewLifecycleOwner, Observer {
                     nombreCiudad = lista.value!!.get(0).name
 
@@ -161,7 +199,7 @@ class MainWeather : Fragment() {
                         .into(
                             icon
                         )
-                    Toast.makeText(context, nombreCiudad, Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(context, nombreCiudad, Toast.LENGTH_SHORT).show()
                     nombreCiudad = limpiarAcentos(nombreCiudad)
                     var favorito = dataRepository.isFavoritos(user.toString(), nombreCiudad)
                     if (favorito) {
@@ -171,6 +209,16 @@ class MainWeather : Fragment() {
                         siFavorito.isVisible = true
                         noFavorito.isVisible = false
                     }
+
+                    val preferences = activity?.getSharedPreferences(
+                        "ciudadEscogida",
+                        Context.MODE_PRIVATE
+                    )
+                    var editor: SharedPreferences.Editor = preferences!!.edit()
+                    editor.putString("ciudadEscogida", nombreCiudad)
+                    editor.apply()
+                    //Toast.makeText(context, nombreCiudad, Toast.LENGTH_SHORT).show()
+
                 })
 
                 return true
@@ -188,7 +236,14 @@ class MainWeather : Fragment() {
 
     fun aplicarCambios() {
         lista.observe(viewLifecycleOwner, Observer {
+
             nombreCiudad = lista.value!!.get(0).name
+
+            val preferences = activity?.getSharedPreferences("ciudadEscogida", Context.MODE_PRIVATE)
+            var editor: SharedPreferences.Editor = preferences!!.edit()
+            editor.putString("ciudadEscogida", nombreCiudad)
+            editor.apply()
+
 
             val primeraLetra: String =
                 lista.value!!.get(0).description.substring(0, 1).toUpperCase()
@@ -211,9 +266,18 @@ class MainWeather : Fragment() {
 
     }
 
-    private fun getDataWeather(nombreCiudad: String) {
-        val url =
-            "https://api.openweathermap.org/data/2.5/weather?q=" + nombreCiudad + "&lang=" + lang + "&units=" + units + "&appid=" + API_CODE
+    private fun getDataWeather(nombreCiudad: String, latitud: String?, longitud: String?) {
+
+
+        var url = ""
+        if (nombreCiudad == ""){
+            url = "https://api.openweathermap.org/data/2.5/weather?lat="+ latitud + "&lon=" + longitud +"&lang=" + lang + "&units=" + units + "&appid=" + API_CODE
+            Toast.makeText(context, "Latitud y longitud: ${latitud} : ${longitud}", Toast.LENGTH_SHORT).show()
+        }else{
+            url = "https://api.openweathermap.org/data/2.5/weather?q=" + nombreCiudad + "&lang=" + lang + "&units=" + units + "&appid=" + API_CODE
+        }
+
+
 
         val requestQueue = Volley.newRequestQueue(requireContext())
         var icon: String = ""

@@ -13,13 +13,11 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="68dp"
-        android:layout_marginBottom="37dp"
-        app:layout_constraintBottom_toBottomOf="@+id/textView_Description"
+        android:layout_height="140dp"
+        android:layout_marginTop="34dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView_temperature"
+        app:layout_constraintStart_toEndOf="@+id/textView_name"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@tools:sample/avatars" />
 
@@ -27,85 +25,84 @@
         android:id="@+id/textView_temperature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="43dp"
-        android:layout_marginTop="70dp"
-        android:layout_marginEnd="297dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="13dp"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline2"
-        app:layout_constraintEnd_toStartOf="@+id/imageView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/textView_tempMin"
+        app:layout_constraintEnd_toEndOf="@+id/textView_tempMin"
         tools:text="25.0°C" />
 
     <TextView
         android:id="@+id/textView_feels_like"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="27dp"
+        android:layout_marginStart="47dp"
+        android:layout_marginBottom="33dp"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        app:layout_constraintEnd_toEndOf="@+id/textView_temperature"
-        app:layout_constraintStart_toStartOf="@+id/textView_temperature"
-        app:layout_constraintTop_toBottomOf="@+id/textView_temperature"
+        app:layout_constraintBottom_toTopOf="@+id/textView_tempMax"
+        app:layout_constraintStart_toStartOf="parent"
         tools:text="Feels like 20.4°C" />
 
     <TextView
         android:id="@+id/textView_Description"
-        android:layout_width="231dp"
+        android:layout_width="0dp"
         android:layout_height="37dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="26dp"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/textView_temperature"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintStart_toEndOf="@+id/textView_temperature"
+        app:layout_constraintTop_toTopOf="@+id/textView_temperature"
         tools:text="Descripcion" />
 
     <TextView
         android:id="@+id/textView_tempMax"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="93dp"
-        android:layout_marginBottom="92dp"
+        android:layout_marginStart="38dp"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/textView_tempMin"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_feels_like"
+        app:layout_constraintTop_toTopOf="@+id/textView_tempMin"
         tools:text="Maxima: 25.0°C" />
 
     <TextView
         android:id="@+id/textView_humedad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="17dp"
-        android:layout_marginEnd="19dp"
+        android:layout_marginTop="33dp"
+        android:layout_marginEnd="11dp"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-        app:layout_constraintBottom_toBottomOf="@+id/textView_tempMin"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintStart_toEndOf="@+id/textView_Description"
-        app:layout_constraintTop_toTopOf="@+id/textView_tempMin"
+        app:layout_constraintEnd_toEndOf="@+id/textView_Description"
+        app:layout_constraintTop_toBottomOf="@+id/textView_Description"
         tools:text="Humedad: 20 %" />
 
     <TextView
         android:id="@+id/textView_tempMin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="60dp"
+        android:layout_marginBottom="67dp"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-        app:layout_constraintBottom_toBottomOf="@+id/textView_tempMax"
-        app:layout_constraintEnd_toStartOf="@+id/textView_humedad"
-        app:layout_constraintTop_toTopOf="@+id/textView_tempMax"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         tools:text="Minima: 25.0°C" />
 
     <TextView
         android:id="@+id/textView_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="27dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="43dp"
         android:text="No hay resultados"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline2"
-        app:layout_constraintBaseline_toBaselineOf="@+id/textView_temperature"
-        app:layout_constraintEnd_toEndOf="@+id/textView_Description"
-        app:layout_constraintStart_toStartOf="@+id/textView_Description" />
+        app:layout_constraintEnd_toStartOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
