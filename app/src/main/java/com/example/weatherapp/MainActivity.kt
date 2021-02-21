@@ -4,18 +4,14 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.location.Address
-import android.location.Geocoder
 import android.os.Bundle
 import android.os.Looper
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.navigation.ui.onNavDestinationSelected
 import com.google.android.gms.location.LocationCallback
@@ -34,12 +30,21 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         //val layout = findViewById<CollapsingToolbarLayout>(R.id.collapsing_toolbar_layout)
+        val editor = getSharedPreferences("user", MODE_PRIVATE).edit()
+        editor.clear().apply()
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        if (ContextCompat.checkSelfPermission(applicationContext,android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this@MainActivity,arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),REQUEST_PERMISSION_REQUEST_CODE)
+        if (ContextCompat.checkSelfPermission(
+                applicationContext,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(
+                this@MainActivity,
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                REQUEST_PERMISSION_REQUEST_CODE
+            )
         }else {
             getCurrentLocation()
         }
@@ -94,7 +99,7 @@ class MainActivity : AppCompatActivity() {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 getCurrentLocation()
             }else{
-                Toast.makeText(this@MainActivity,"Permission Denied!",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@MainActivity, "Permission Denied!", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -116,18 +121,18 @@ class MainActivity : AppCompatActivity() {
 
         if (checkPermissions()){
             LocationServices.getFusedLocationProviderClient(this@MainActivity)
-                .requestLocationUpdates(locationRequest,object : LocationCallback(){
+                .requestLocationUpdates(locationRequest, object : LocationCallback() {
                     override fun onLocationResult(locationResult: LocationResult?) {
                         super.onLocationResult(locationResult)
                         LocationServices.getFusedLocationProviderClient(this@MainActivity)
                             .removeLocationUpdates(this)
-                        if (locationResult != null && locationResult.locations.size > 0){
-                            var locIndex = locationResult.locations.size-1
+                        if (locationResult != null && locationResult.locations.size > 0) {
+                            var locIndex = locationResult.locations.size - 1
 
                             latitude = locationResult.locations.get(locIndex).latitude
                             longitude = locationResult.locations.get(locIndex).longitude
 
-                           // Toast.makeText(applicationContext, "Latitud y longitud: ${latitude} : ${longitude}", Toast.LENGTH_SHORT).show()
+                            // Toast.makeText(applicationContext, "Latitud y longitud: ${latitude} : ${longitude}", Toast.LENGTH_SHORT).show()
 
                             editor.putString("latitude", latitude.toString())
                             editor.putString("longitude", longitude.toString())
@@ -143,8 +148,14 @@ class MainActivity : AppCompatActivity() {
 
     }
     fun checkPermissions(): Boolean {
-        return ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+        return ActivityCompat.checkSelfPermission(
+            this,
+            android.Manifest.permission.ACCESS_COARSE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(
+            this,
+            android.Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
 
         // If we want background location
         // on Android 10.0 and higher,

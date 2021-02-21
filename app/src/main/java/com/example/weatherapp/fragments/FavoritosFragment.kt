@@ -19,6 +19,7 @@ import com.example.weatherapp.adapters.RecyclerItemClickListener
 import com.example.weatherapp.database.Ciudades
 import com.example.weatherapp.database.DataRepository
 import com.example.weatherapp.model.CiudadesViewModel
+import java.net.IDN
 import java.util.*
 
 
@@ -78,6 +79,7 @@ class FavoritosFragment : Fragment(), ActionMode.Callback {
     fun rellenarListaCiudades(){
         var preferences = activity?.getSharedPreferences("user", Context.MODE_PRIVATE)
         var user = preferences?.getString("user", "")
+
         var dataRepository = DataRepository(requireContext())
         ciudades = dataRepository.getCiudades(user.toString())[0].ciudades
 

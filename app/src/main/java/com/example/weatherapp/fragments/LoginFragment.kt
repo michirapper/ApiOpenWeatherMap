@@ -61,8 +61,6 @@ class LoginFragment : Fragment() {
         val dataRepository = DataRepository(requireContext())
         var passwordSecure = PasswordSecure
         remember = requireView().findViewById(R.id.checkBox)
-        val preferences = activity?.getSharedPreferences("checkbox", Context.MODE_PRIVATE)
-        var editor: SharedPreferences.Editor = preferences!!.edit()
 
 
         contrasenaSegura = passwordSecure.sha256(editTextPassword.text.toString())
@@ -73,7 +71,9 @@ class LoginFragment : Fragment() {
             if (dataRepository.isLogin(editTextUsuario.text.toString(), contrasenaSegura)) {
                 //val action = LoginFragmentDirections.actionLoginFragmentToListFragment()
 
-                    //Guardar usuario
+                //Guardar usuario
+                val preferences = activity?.getSharedPreferences("user", Context.MODE_PRIVATE)
+                var editor: SharedPreferences.Editor = preferences!!.edit()
                 editor.putString("user", editTextUsuario.text.toString())
                 editor.apply()
 
@@ -81,13 +81,18 @@ class LoginFragment : Fragment() {
                 //Guardado de sesion
 
                 if (remember.isChecked) {
-
+                    val preferences =
+                        activity?.getSharedPreferences("checkbox", Context.MODE_PRIVATE)
+                    var editor: SharedPreferences.Editor = preferences!!.edit()
                     editor.putString("remember", "true")
                     editor.apply()
-                   // Toast.makeText(context, "Checked", Toast.LENGTH_SHORT).show()
+                    // Toast.makeText(context, "Checked", Toast.LENGTH_SHORT).show()
 
 
                 } else if (!remember.isChecked) {
+                    val preferences =
+                        activity?.getSharedPreferences("checkbox", Context.MODE_PRIVATE)
+                    var editor: SharedPreferences.Editor = preferences!!.edit()
                     editor.putString("remember", "false")
                     editor.apply()
                     //Toast.makeText(context, "Unchecked", Toast.LENGTH_SHORT).show()
@@ -101,6 +106,7 @@ class LoginFragment : Fragment() {
             }
         }
     }
+
 
     companion object {
         @JvmStatic
